@@ -29,7 +29,7 @@ const PillcasePage = ({ navigation }) => {
             <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
                 <Fontisto name="info" size={18}  />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
+            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('AlarmPage')}>
                 <Fontisto name="bell" size={18}  />
             </TouchableOpacity>
           </View>
