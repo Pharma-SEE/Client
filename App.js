@@ -11,9 +11,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import MainPage from './pages/MainPage';
+import FindPage from './pages/FindPage';
 import PillcasePage from './pages/PillcasePage';
 import InfoPage from './pages/InfoPage';
 import AlarmPage from './pages/AlarmPage';
+import TodayPage from './pages/TodayPage';
+import BohojaPage from './pages/BohojaPage';
 
 // Import Custom Sidebar
 import CustomSidebarMenu from './CustomSidebarMenu';
@@ -52,6 +55,30 @@ function mainScreenStack({ navigation }) {
         component={MainPage}
         options={{
           title: 'Main Page', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#f4511e', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function findScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName="FindPage">
+      <Stack.Screen
+        name="FindPage"
+        component={FindPage}
+        options={{
+          title: 'Find Page', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
@@ -109,6 +136,54 @@ function pillcaseScreenStack({ navigation }) {
   );
 }
 
+function todayScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName="TodayPage">
+      <Stack.Screen
+        name="TodayPage"
+        component={TodayPage}
+        options={{
+          title: 'Today Page', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#f4511e', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function bohojaScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName="BohojaPage">
+      <Stack.Screen
+        name="BohojaPage"
+        component={BohojaPage}
+        options={{
+          title: 'Bohoja Page', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#f4511e', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function App() {
   return (
     <NavigationContainer>
@@ -126,7 +201,7 @@ function App() {
         <Drawer.Screen
           name="FindPage"
           options={{ drawerLabel: '약 찾기/등록하기' }}
-          component={pillcaseScreenStack}
+          component={findScreenStack}
         />
         <Drawer.Screen
           name="PillcasePage"
@@ -136,12 +211,12 @@ function App() {
         <Drawer.Screen
           name="TodayPage"
           options={{ drawerLabel: '오늘의 약' }}
-          component={pillcaseScreenStack}
+          component={todayScreenStack}
         />
         <Drawer.Screen
           name="BohojaPage"
           options={{ drawerLabel: '보호자 연결' }}
-          component={pillcaseScreenStack}
+          component={bohojaScreenStack}
         />
       </Drawer.Navigator>
     </NavigationContainer>
