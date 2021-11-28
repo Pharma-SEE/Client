@@ -17,6 +17,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
+  pillText:{
+    flex:1,
+  },
+
+  pillIcon:{
+    marginHorizontal:10,
+
+  },
+
 
   
 });

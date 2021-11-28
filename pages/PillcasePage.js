@@ -25,11 +25,11 @@ const PillcasePage = ({ navigation }) => {
           </View>
           <ScrollView style={{ flex:4, }}>
           <View style={styles.pill}>
-            <Text style={{justifyContent:"flex-start"}}>Pill 1</Text>
-            <TouchableOpacity style={{justifyContent:"flex-end"}} onPress={() => navigation.navigate('InfoPage')}>
+            <Text style={styles.pillText}>Pill 1</Text>
+            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
                 <Fontisto name="info" size={18}  />
             </TouchableOpacity>
-            <TouchableOpacity style={{justifyContent:"flex-end"}} onPress={() => navigation.navigate('InfoPage')}>
+            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
                 <Fontisto name="bell" size={18}  />
             </TouchableOpacity>
           </View>
