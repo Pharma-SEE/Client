@@ -1,8 +1,8 @@
-// Custom Navigation Drawer / Sidebar with Image and Icon in Menu Options
-// https://aboutreact.com/custom-navigation-drawer-sidebar-with-image-and-icon-in-menu-options/
-
 import * as React from 'react';
-import { Button, View, Text, SafeAreaView } from 'react-native';
+import { Button, View, Text, SafeAreaView, ScrollView,
+TouchableOpacity } from 'react-native';
+import styles from '../style';
+import {Fontisto} from '@expo/vector-icons'
 
 const PillcasePage = ({ navigation }) => {
   return (
@@ -10,9 +10,9 @@ const PillcasePage = ({ navigation }) => {
       <View style={{ flex: 1, padding: 16 }}>
         <View
           style={{
-            flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
+            marginBottom:50,
           }}>
           <Text
             style={{
@@ -22,21 +22,22 @@ const PillcasePage = ({ navigation }) => {
             }}>
             This is Pillcase Page under Pillcase Page Option
           </Text>
-          <Button
-            title="Go to Info Page"
-            onPress={() => navigation.navigate('InfoPage')}
-          />
-          <Button
-            title="Go to Alarm Page"
-            onPress={() => navigation.navigate('AlarmPage')}
-          />
-        </View>
-        <Text style={{ fontSize: 18, textAlign: 'center', color: 'grey' }}>
-          Custom React Navigate Drawer
-        </Text>
-        <Text style={{ fontSize: 16, textAlign: 'center', color: 'grey' }}>
-          www.aboutreact.com
-        </Text>
+          </View>
+          <ScrollView style={{ flex:4, }}>
+          <View style={styles.pill}>
+            <Text style={{justifyContent:"flex-start"}}>Pill 1</Text>
+            <TouchableOpacity style={{justifyContent:"flex-end"}} onPress={() => navigation.navigate('InfoPage')}>
+                <Fontisto name="info" size={18}  />
+            </TouchableOpacity>
+            <TouchableOpacity style={{justifyContent:"flex-end"}} onPress={() => navigation.navigate('InfoPage')}>
+                <Fontisto name="bell" size={18}  />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.pill}>
+            <Text>Pill 2</Text>
+          </View>
+          
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
