@@ -4,6 +4,7 @@ TouchableOpacity, ImageBackground } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
+
 const NavigationDrawerStructure = (props) => {
   const toggleDrawer = () => {
     props.navigationProps.toggleDrawer();

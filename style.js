@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
     marginHorizontal:10,
   },
 
+  sidebar:{
+    color:'#96CEBC',
+    marginLeft:SCREEN_WIDTH*0.05,
+    marginTop:SCREEN_HEIGHT * 0.05,
+  },
+
   hamburger:{
     color:'white',
     alignItems:"flex-start",
@@ -44,7 +50,7 @@ const styles = StyleSheet.create({
     height:SCREEN_HEIGHT,
     flex:1,
     resizeMode:'cover',
-  }
+  },
 
 
   

@@ -42,7 +42,7 @@ const BohojaPage = ({ navigation }) => {
               textAlign: 'left',
               marginBottom: 16,
             }}>
-            Bohoja Page
+            보호자{"\n"}연결하기
           </Text>
           
         </View>

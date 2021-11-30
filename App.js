@@ -21,6 +21,7 @@ import CustomSidebarMenu from './CustomSidebarMenu';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+/*
 const NavigationDrawerStructure = (props) => {
   //Structure for the navigatin Drawer
   const toggleDrawer = () => {
@@ -31,7 +32,6 @@ const NavigationDrawerStructure = (props) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       <TouchableOpacity onPress={toggleDrawer}>
-        {/*Donute Button Image */}
         <Image
           source={{
             uri:
@@ -43,6 +43,9 @@ const NavigationDrawerStructure = (props) => {
     </View>
   );
 };
+
+*/
+
 
 function mainScreenStack({ navigation }) {
   return (

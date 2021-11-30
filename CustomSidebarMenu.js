@@ -1,34 +1,39 @@
-// Custom Navigation Drawer / Sidebar with Image and Icon in Menu Options
-// https://aboutreact.com/custom-navigation-drawer-sidebar-with-image-and-icon-in-menu-options/
-
 import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Linking,
-} from 'react-native';
+import { Button, View, Text, SafeAreaView, ScrollView,
+  TouchableOpacity, ImageBackground } from 'react-native';
 
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList,
+  DrawerItem } from '@react-navigation/drawer';
 
-const CustomSidebarMenu = (props) => {
-  const BASE_PATH =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/';
-  const proileImage = 'react_logo.png';
+import styles from './style';
+import {Fontisto} from '@expo/vector-icons'
+
+/*
+const NavigationDrawerStructure = (props) => {
+  const toggleDrawer = () => {
+    props.navigationProps.closeDrawer();
+  };
+
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <TouchableOpacity onPress={toggleDrawer}>
+        <Fontisto style={styles.sidebar} name="nav-icon-a" size={28}  />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+
+  <NavigationDrawerStructure navigationProps={navigation} />
+*/
+
+const CustomSidebarMenu = (props, { navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/*Top Large Image */}
-      <Image
-        source={{ uri: BASE_PATH + proileImage }}
-        style={styles.sideMenuProfileIcon}
-      />
+      <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
+        <Fontisto style={styles.sidebar} name="nav-icon-a" size={28}  />
+      </TouchableOpacity>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         
@@ -38,24 +43,5 @@ const CustomSidebarMenu = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    alignSelf: 'center',
-  },
-  iconStyle: {
-    width: 15,
-    height: 15,
-    marginHorizontal: 5,
-  },
-  customItem: {
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
 
 export default CustomSidebarMenu;
