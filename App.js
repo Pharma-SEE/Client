@@ -46,22 +46,12 @@ const NavigationDrawerStructure = (props) => {
 
 function mainScreenStack({ navigation }) {
   return (
-    <Stack.Navigator initialRouteName="MainPage">
+    <Stack.Navigator initialRouteName="MainPage" screenOptions={{ headerShown:false}}>
       <Stack.Screen
         name="MainPage"
         component={MainPage}
         options={{
-          title: 'Main Page', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerStructure navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
+          headerShown: false
         }}
       />
     </Stack.Navigator>
@@ -75,17 +65,7 @@ function findScreenStack({ navigation }) {
         name="FindPage"
         component={FindPage}
         options={{
-          title: 'Find Page', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerStructure navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
+          headerShown: false
         }}
       />
     </Stack.Navigator>
@@ -97,16 +77,7 @@ function pillcaseScreenStack({ navigation }) {
     <Stack.Navigator
       initialRouteName="PillcasePage"
       screenOptions={{
-        headerLeft: () => (
-          <NavigationDrawerStructure navigationProps={navigation} />
-        ),
-        headerStyle: {
-          backgroundColor: '#f4511e', //Set Header color
-        },
-        headerTintColor: '#fff', //Set Header text color
-        headerTitleStyle: {
-          fontWeight: 'bold', //Set Header text style
-        },
+        headerShown:false
       }}>
       <Stack.Screen
         name="PillcasePage"
@@ -140,17 +111,7 @@ function todayScreenStack({ navigation }) {
         name="TodayPage"
         component={TodayPage}
         options={{
-          title: 'Today Page', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerStructure navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
+          headerShown: false
         }}
       />
     </Stack.Navigator>
@@ -164,17 +125,7 @@ function bohojaScreenStack({ navigation }) {
         name="BohojaPage"
         component={BohojaPage}
         options={{
-          title: 'Bohoja Page', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerStructure navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
+          headerShown: false
         }}
       />
     </Stack.Navigator>
@@ -186,10 +137,12 @@ function App() {
     <NavigationContainer>
       <Drawer.Navigator
         drawerContentOptions={{
-          activeTintColor: '#e91e63',
+          activeTintColor: '#96CEBC',
           itemStyle: { marginVertical: 5 },
         }}
-        drawerContent={(props) => <CustomSidebarMenu {...props} />}>
+        screenOptions={{ headerShown:false }}
+        drawerContent={(props) => <CustomSidebarMenu {...props} />}
+      >
         <Drawer.Screen
           name="MainPage"
           options={{ drawerLabel: '메인 페이지' }}
