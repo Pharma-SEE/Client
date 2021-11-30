@@ -3,6 +3,11 @@ import { ScrollView, Button, View, Text, SafeAreaView,
   TouchableOpacity, ImageBackground } from 'react-native';
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
+import * as Font from 'expo-font';
+
+Font.loadAsync({
+  'NanumSquareR': require('../assets/fonts/NanumSquareR.ttf'),
+});
 
 const NavigationDrawerStructure = (props) => {
   const toggleDrawer = () => {
@@ -36,6 +41,7 @@ const MainPage = ({ navigation }) => {
                     fontSize: 25,
                     textAlign: 'left',
                     marginBottom: 50,
+                    fontFamily:'NanumSquareR'
                   }}>
                   안녕하세요,{"\n"}[모건]님! :) {"\n"}오늘 복용하실 약은
                 </Text>

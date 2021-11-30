@@ -33,17 +33,19 @@ const BohojaPage = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            alignItems: 'center',
             marginTop: 100,
           }}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'left',
-              marginBottom: 16,
-            }}>
+          <Text style={styles.bigText}>
             보호자{"\n"}연결하기
           </Text>
+          
+          <Text style={styles.smallText}>
+              내 기기의 Pin code / 연결된 보호자
+          </Text>
+
+          <TouchableOpacity style={styles.connectBtn}>
+              <Text style={styles.connectText}>연결 하기</Text>
+          </TouchableOpacity>
           
         </View>
         </ImageBackground>

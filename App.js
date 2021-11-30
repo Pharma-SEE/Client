@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
 
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+import {AppLoading} from 'expo'
 
 import MainPage from './pages/MainPage';
 import FindPage from './pages/FindPage';
@@ -15,8 +17,8 @@ import AlarmPage from './pages/AlarmPage';
 import TodayPage from './pages/TodayPage';
 import BohojaPage from './pages/BohojaPage';
 
-// Import Custom Sidebar
 import CustomSidebarMenu from './CustomSidebarMenu';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -135,7 +137,14 @@ function bohojaScreenStack({ navigation }) {
   );
 }
 
+function fetchFonts() {
+  Font.loadAsync({
+    'open-sans': require('./assets/fonts/NanumSquareR.ttf'),
+  });
+}
+
 function App() {
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
