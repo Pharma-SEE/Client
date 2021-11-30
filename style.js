@@ -27,15 +27,16 @@ const styles = StyleSheet.create({
     color:'white',
     alignItems:"flex-start",
     justifyContent:"flex-start",
-    marginEnd:SCREEN_WIDTH-100,
+    marginEnd:SCREEN_WIDTH*0.8,
+    marginTop:SCREEN_HEIGHT * 0.05
   },
 
   container:{
     backgroundColor: '#F2F2F2',
     borderRadius: 15,
-    marginBottom:150,
+    marginBottom:SCREEN_HEIGHT*0.2,
     width:'90%',
-    marginHorizontal:10,
+    marginHorizontal:SCREEN_WIDTH*0.05,
   },
 
   bgImage:{
