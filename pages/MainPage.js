@@ -7,6 +7,7 @@ import * as Font from 'expo-font';
 
 Font.loadAsync({
   'NanumSquareR': require('../assets/fonts/NanumSquareR.ttf'),
+
 });
 
 const NavigationDrawerStructure = (props) => {
@@ -35,21 +36,16 @@ const MainPage = ({ navigation }) => {
           }} >
           <NavigationDrawerStructure navigationProps={navigation} />
         </View>
-        <View style={{...styles.container, flex:1}}>
+        <View style={styles.container}>
               <Text
-                  style={{
-                    fontSize: 25,
-                    textAlign: 'left',
-                    marginBottom: 50,
-                    fontFamily:'NanumSquareR'
-                  }}>
+                  style={{...styles.smallText, color:"black"}}>
                   안녕하세요,{"\n"}[모건]님! :) {"\n"}오늘 복용하실 약은
                 </Text>
           <ScrollView style={{ }}>
-              <View style={styles.pill}>
+              <View style={styles.pillContainer}>
                 <Text>Pill 1</Text>
               </View>
-              <View style={styles.pill}>
+              <View style={styles.pillContainer}>
                 <Text>Pill 2</Text>
               </View>
           </ScrollView>

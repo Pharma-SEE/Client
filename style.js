@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 
 Font.loadAsync({
   'NanumSquareR': require('./assets/fonts/NanumSquareR.ttf'),
+  'NanumSquareB': require('./assets/fonts/NanumSquareB.ttf'),
 });
 
 const { width: SCREEN_WIDTH, height:SCREEN_HEIGHT } = Dimensions.get("window");
@@ -10,19 +11,32 @@ const { width: SCREEN_WIDTH, height:SCREEN_HEIGHT } = Dimensions.get("window");
 
 
 const styles = StyleSheet.create({
-  pill: {
+  pillContainer:{
     backgroundColor: "white",
     marginBottom: 10,
     marginHorizontal:10,
     paddingVertical: 20,
     paddingHorizontal:20,
     borderRadius: 10,
+    flexDirection: "column",
+  },
+
+  pillFirstLine: {
     flexDirection: "row",
     alignItems:"center",
     justifyContent: "space-between",
   },
 
   pillText:{
+    fontFamily:'NanumSquareB',
+    fontSize:20,
+    flex:1,
+    marginBottom:"5%",
+  },
+
+  pillDescription:{
+    fontFamily:'NanumSquareB',
+    fontSize:15,
     flex:1,
   },
 
@@ -47,9 +61,16 @@ const styles = StyleSheet.create({
   container:{
     backgroundColor: '#F2F2F2',
     borderRadius: 15,
-    marginBottom:SCREEN_HEIGHT*0.2,
     width:'90%',
     marginHorizontal:SCREEN_WIDTH*0.05,
+  },
+
+  smallContainer:{
+    backgroundColor: "white",
+    borderRadius:15,
+    marginHorizontal: '5%',
+    marginVertical: SCREEN_HEIGHT * 0.01,
+    width:'90%',
   },
 
   bgImage:{
@@ -74,22 +95,54 @@ const styles = StyleSheet.create({
   connectText:{
     fontSize:25,
     color:"white",
-    fontFamily:'NanumSquareR',
+    fontFamily:'NanumSquareB',
   },
 
   bigText:{
     color:"white",
     fontSize:45,
     marginLeft:SCREEN_WIDTH*0.1,
-    fontFamily:'NanumSquareR',
-    fontWeight:"bold",
+    fontFamily:'NanumSquareB',
   },
 
   smallText:{
     color:"white",
+    fontFamily:'NanumSquareR',
     fontSize:25,  
     marginLeft:SCREEN_WIDTH*0.1,
   },
+
+  menuText:{
+    fontFamily:'NanumSquareB',
+    fontSize:19,
+    marginVertical:8,
+  },
+  
+  menuIcon:{
+    color:'black',
+    marginVertical:4,
+    marginHorizontal:10,
+  },
+
+  title:{
+    color:"black",
+    fontSize:38,
+    marginLeft:SCREEN_WIDTH*0.05,
+    fontFamily:'NanumSquareB',
+    marginBottom:SCREEN_HEIGHT*0.02,
+    marginTop:SCREEN_HEIGHT*0.02,
+  },
+
+  searching:{
+    borderRadius:15,
+    borderColor:"black",
+    width:"90%",
+    marginHorizontal:"5%",
+    justifyContent:"space-between",
+    paddingLeft:"5%",
+    backgroundColor: '#D8D8D8',
+    marginVertical:"3%",
+  }
   
 });
 

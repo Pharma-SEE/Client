@@ -22,7 +22,7 @@ const TodayPage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, }}>
-      <ImageBackground source={require("../images/background_mt.png")} style={styles.bgImage} >
+      <ImageBackground source={require("../images/background_sea.png")} style={styles.bgImage} >
         <View style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -30,21 +30,10 @@ const TodayPage = ({ navigation }) => {
           }} >
           <NavigationDrawerStructure navigationProps={navigation} />
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            marginTop: 100,
-          }}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'left',
-              marginBottom: 16,
-            }}>
-            Today Page
+        <View style={{...styles.smallContainer, marginTop:"5%"}}>
+          <Text style={{...styles.title, fontSize:33}}>
+            오늘 먹을 약 인식
           </Text>
-          
         </View>
         </ImageBackground>
       </View>

@@ -31,28 +31,40 @@ const PillcasePage = ({ navigation }) => {
             marginBottom:50,
           }}>
           <NavigationDrawerStructure navigationProps={navigation} />
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'center',
-              marginBottom: 16,
-            }}>
-            This is Pillcase Page under Pillcase Page Option
+          <View style={{...styles.smallContainer, marginTop:"10%"}}>
+          <Text style={{...styles.title, fontSize:33}}>
+            나의 약통
           </Text>
           </View>
+          </View>
           <ScrollView style={{ flex:4, }}>
-          <View style={styles.pill}>
-            <Text style={styles.pillText}>Pill 1</Text>
-            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
-                <Fontisto name="info" size={18}  />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('AlarmPage')}>
-                <Fontisto name="bell" size={18}  />
-            </TouchableOpacity>
+          <View style={{...styles.pillContainer}}>
+            <View style={styles.pillFirstLine}>
+              <Text style={styles.pillText}>[디오솔탄트] [50mg]</Text>
+              <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
+                  <Fontisto name="info" size={18}  />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('AlarmPage')}>
+                  <Fontisto name="bell" size={18}  />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.pillDescription}>[타원형, 흰색 캡슐]</Text>
+            <Text style={styles.pillDescription}>[항암치료제]</Text>
           </View>
-          <View style={styles.pill}>
-            <Text>Pill 2</Text>
+          <View style={{...styles.pillContainer}}>
+            <View style={styles.pillFirstLine}>
+              <Text style={styles.pillText}>[콘스탄티누스] [1정]</Text>
+              <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('InfoPage')}>
+                  <Fontisto name="info" size={18}  />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.pillIcon} onPress={() => navigation.navigate('AlarmPage')}>
+                  <Fontisto name="bell" size={18}  />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.pillDescription}>[원형, 주황색 캡슐]</Text>
+            <Text style={styles.pillDescription}>[비타민 B 보조제]</Text>
           </View>
+          
           
         </ScrollView>
         </ImageBackground>

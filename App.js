@@ -18,7 +18,7 @@ import TodayPage from './pages/TodayPage';
 import BohojaPage from './pages/BohojaPage';
 
 import CustomSidebarMenu from './CustomSidebarMenu';
-
+import styles from './style';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -137,20 +137,22 @@ function bohojaScreenStack({ navigation }) {
   );
 }
 
+/*
 function fetchFonts() {
   Font.loadAsync({
     'open-sans': require('./assets/fonts/NanumSquareR.ttf'),
   });
 }
+*/
 
 function App() {
 
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerContentOptions={{
+        drawerContentOptions={{...styles.smallText,
           activeTintColor: '#96CEBC',
-          itemStyle: { marginVertical: 5 },
+          itemStyle: { marginVertical: 15 },
         }}
         screenOptions={{ headerShown:false }}
         drawerContent={(props) => <CustomSidebarMenu {...props} />}

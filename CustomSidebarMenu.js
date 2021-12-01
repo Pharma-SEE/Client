@@ -27,7 +27,7 @@ const NavigationDrawerStructure = (props) => {
   <NavigationDrawerStructure navigationProps={navigation} />
 */
 
-const CustomSidebarMenu = (props, { navigation }) => {
+const CustomSidebarMenu = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
