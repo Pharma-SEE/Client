@@ -7,7 +7,7 @@ import {Fontisto} from "@expo/vector-icons";
 import {Camera} from 'expo-camera'
 
 
-const BASE_URL = "http://88c4-222-109-122-116.ngrok.io/";
+const BASE_URL = "http://c3ff-121-161-171-137.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -86,8 +86,8 @@ const FindPage = ({ navigation }) => {
   const [text, setText] = useState("");
   const [image,setImage] = useState(null);
   const [camera, setCamera] = useState(false);
+  
   const [search, setSearch] = useState("");
-
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
