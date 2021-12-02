@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Component} from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,6 +8,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {AppLoading} from 'expo'
+import * as Permissions from 'expo-permissions';
+import {Camera} from 'expo-camera'
+import * as Font from 'expo-font';
 
 import MainPage from './pages/MainPage';
 import FindPage from './pages/FindPage';
@@ -145,8 +148,30 @@ function fetchFonts() {
 }
 */
 
-function App() {
+export class App extends React.Component {
+  state={
+    hasPermission: null,
+    fontsLoaded: false,
+  }
+  async loadFonts() {
+    await Font.loadAsync({
+      NanumSquareR: require('./assets/fonts/NanumSquareR.ttf'),
+      NanumSquareB: {
+        uri: require('./assets/fonts/NanumSquareB.ttf'),
+        display: Font.FontDisplay.FALLBACK,
+      },
+    });
+    this.setState({ fontsLoaded: true });
+  }
 
+
+  componentDidMount = async () => {
+    const {status} = await Permissions.askAsync(Permissions.CAMERA);
+    console.log(status);
+    this.loadFonts();
+  }
+  render(){
+    if (this.state.fontsLoaded){
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -184,7 +209,9 @@ function App() {
         />
       </Drawer.Navigator>
     </NavigationContainer>
-  );
+  );}
+  else{ return null;}
+  }
 }
 
 export default App;

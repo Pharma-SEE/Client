@@ -120,8 +120,26 @@ const styles = StyleSheet.create({
   
   menuIcon:{
     color:'black',
-    marginVertical:4,
+    marginVertical:"3%",
     marginHorizontal:10,
+  },
+
+  plusIcon:{
+    color:'green',
+    marginVertical:"10%",
+    marginHorizontal:"10%",
+  },
+
+  minusIcon:{
+    color:'red',
+    marginVertical:"3%",
+    marginHorizontal:"10%",
+  },
+
+  alarmText:{
+    fontFamily:'NanumSquareB',
+    fontSize:17,
+    marginLeft:"10%",
   },
 
   title:{
@@ -142,7 +160,45 @@ const styles = StyleSheet.create({
     paddingLeft:"5%",
     backgroundColor: '#D8D8D8',
     marginVertical:"3%",
-  }
+  },
+
+  cameraIcon:{
+    tintColor:"#FFD966",
+  },
+
+  outerCircle:{ 
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: "white",
+    height: 50,
+    width: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+    marginTop: 16,
+  },
+
+  innerCircle:{
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: "white",
+    height: 40,
+    width: 40,
+    backgroundColor: "white",
+  },
+
+  profile:{
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: "#FFD966",
+    height: 90,
+    width: 90,
+    backgroundColor: "#FFD966",
+    marginStart:"10%",
+    marginVertical:"5%",
+  },
+
   
 });
 

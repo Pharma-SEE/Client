@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, View, Text, SafeAreaView, ScrollView,
-    TouchableOpacity, ImageBackground } from 'react-native';
+    TouchableOpacity, ImageBackground, TextInput } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
     
@@ -19,33 +19,48 @@ const NavigationDrawerStructure = (props) => {
 };
 
 const BohojaPage = ({ navigation }) => {
+    const [text, setText] = useState("");
+
+    
+    const onChangeText = (texting) => setText(texting);
+
+    const sendSearching = async () => {
+        if (text === "") {
+          return;
+        }
+        //send searching info to Server
+        console.log(text)
+        setText("");
+      };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1,}}>
-      <ImageBackground source={require("../images/background_moon.png")} style={styles.bgImage} >
-        <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom:50,
-          }} >
+        <ImageBackground source={require("../images/background_moon.png")} style={styles.bgImage} >
+        <View style={{ alignItems: 'center', justifyContent: 'center',
+            marginBottom:50, }} >
           <NavigationDrawerStructure navigationProps={navigation} />
         </View>
-        <View
-          style={{
-            flex: 1,
-            marginTop: 100,
-          }}>
-          <Text style={styles.bigText}>
-            보호자{"\n"}연결하기
+        <View style={{...styles.container}}>
+          <Text style={styles.title}>
+            보호자 검색
           </Text>
-          
-          <Text style={styles.smallText}>
-              내 기기의 Pin code / 연결된 보호자
-          </Text>
-
-          <TouchableOpacity style={styles.connectBtn}>
-              <Text style={styles.connectText}>연결 하기</Text>
-          </TouchableOpacity>
+          <View style={styles.smallContainer}>
+            
+           
+            
+            <View style={{...styles.searching, flexDirection:"row"}}>
+              <TextInput
+              onSubmitEditing={sendSearching}
+              onChangeText={onChangeText}
+              returnKeyType="done"
+              value={text}
+              placeholder={"보호자 이름을 입력해주세요"}
+              placeholderTextColor="black" />
+              <TouchableOpacity onPress={sendSearching}>
+                <Fontisto style={{...styles.menuIcon}} name="search" size={28} />
+              </TouchableOpacity>
+              </View>
+          </View>
           
         </View>
         </ImageBackground>

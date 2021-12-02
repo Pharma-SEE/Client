@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, Text, SafeAreaView, 
-    TouchableOpacity, ImageBackground, TextInput } from 'react-native';
+    TouchableOpacity, ImageBackground, TextInput, Modal,
+  ActivityIndicator, FlatList, Image } from 'react-native';
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
+import {Camera} from 'expo-camera'
+
+
+const BASE_URL = "http://88c4-222-109-122-116.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -16,11 +21,95 @@ const NavigationDrawerStructure = (props) => {
         </TouchableOpacity>
       </View>
     );
-  };
+};
+
+const CameraModule = (props) => {
+  const [cameraRef, setCameraRef] = useState(null);
+return (
+   <Modal
+     animationType="slide"
+     transparent={true}
+     visible={true}
+     onRequestClose={() => {
+       props.setModalVisible();
+     }}
+   >
+     <Camera
+       style={{ flex: 1 }}
+       ratio="16:9"
+       ref={(ref) => {
+         setCameraRef(ref);
+       }}
+     >
+       <View
+         style={{
+           flex: 1,
+           backgroundColor: "transparent",
+           justifyContent: "flex-end",
+         }}
+       >
+         <View
+           style={{
+             backgroundColor: "black",
+             flexDirection: "row",
+             alignItems: "center",
+           }}
+         >
+           <TouchableOpacity style={{marginLeft: 12}} onPress={() => {props.setModalVisible();}} >
+             <Text style={{color:"white", marginEnd:"35%"}}>Close</Text>
+            </TouchableOpacity>
+           
+          <TouchableOpacity
+             onPress={async () => {
+               if (cameraRef) {
+                 let photo = await cameraRef.takePictureAsync();
+                 props.setImage(photo);
+                 props.setModalVisible();
+               }
+             }}
+           >
+             <View style={{...styles.outerCircle}} >
+               <View style={{...styles.innerCircle}}>
+               </View>
+             </View>
+           </TouchableOpacity>
+      
+         </View>
+       </View>
+     </Camera>
+   </Modal>
+ );
+};
 
 const FindPage = ({ navigation }) => {
   const [name, setSearchName] = useState(false);
   const [text, setText] = useState("");
+  const [image,setImage] = useState(null);
+  const [camera, setCamera] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  const searchPills = async () => {
+     try {
+      if (name){
+        setSearch("name");
+      }
+      else{
+        setSearch("effect");
+      }
+      const response = await fetch(BASE_URL+'pharmasee/search/?'+search+'='+text);
+      const json = await response.json();
+      setData(json);
+      console.log(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   const searchName = () => setSearchName(true);
   const searchSymptom = () => setSearchName(false);
@@ -31,6 +120,7 @@ const FindPage = ({ navigation }) => {
       return;
     }
     //send searching info to Server
+    searchPills()
     console.log(text)
     setText("");
   };
@@ -55,15 +145,20 @@ const FindPage = ({ navigation }) => {
               <Text style={styles.menuText}>증상 검색</Text>
             </View>
             <View style={{flexDirection:"row"}}>
-              
             <TouchableOpacity onPress={searchName}>
               <Fontisto style={{...styles.menuIcon, color: !name? "black" : "green"}} name="check" size={18} />
             </TouchableOpacity>
-              <Text style={styles.menuText}>이름 / 사진으로 검색</Text>
+              <Text style={styles.menuText}>이름으로 검색</Text>
+            </View>
+            <View style={{flexDirection:"row"}}>
+            <TouchableOpacity onPress={() => {setCamera(true);}}>
+              <Fontisto style={{...styles.menuIcon, }} name="camera" size={21} />
+            </TouchableOpacity >
+              <Text style={styles.menuText}>사진으로 검색</Text>
             </View>
             
             <View style={{...styles.searching, flexDirection:"row"}}>
-            <TextInput
+              <TextInput
               onSubmitEditing={sendSearching}
               onChangeText={onChangeText}
               returnKeyType="done"
@@ -75,6 +170,31 @@ const FindPage = ({ navigation }) => {
               </TouchableOpacity>
               </View>
           </View>
+          {camera && (
+        <CameraModule
+          showModal={camera}
+          setModalVisible={() => setCamera(false)}
+          setImage={(result) => setImage(result.uri)}
+        />
+      )}
+      {isLoading? <ActivityIndicator/> : (
+            <FlatList data={data}
+              keyExtractor={({id}, index) => id}
+              renderItem={({item}) => (
+                <View style={styles.pillContainer}>
+                <Text style={styles.pillText}>{item.name}</Text>
+                <Image
+                    source={{ uri: item.image_dir }}
+                    style={{ width: 120, height: 120, }}
+                        />
+                <Text style={styles.pillDescription}>{item.effect}</Text>
+                <TouchableOpacity style={{...styles.connectBtn}}>
+                  <Text>약통에 추가</Text>
+                </TouchableOpacity>
+              </View>
+              )}
+              />
+          )}
         </View>
         </ImageBackground>
       </View>

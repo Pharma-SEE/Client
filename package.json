@@ -23,7 +23,9 @@
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "expo-font": "~10.0.3",
-    "expo-app-loading": "~1.2.1"
+    "expo-app-loading": "~1.2.1",
+    "expo-camera": "~12.0.3",
+    "expo-permissions": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
