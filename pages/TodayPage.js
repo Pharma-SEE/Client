@@ -4,7 +4,11 @@ import { Button, View, Text, SafeAreaView, ScrollView,
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 import {Camera} from 'expo-camera'
-    
+import * as ImagePicker from 'expo-image-picker'; 
+import * as DocumentPicker from 'expo-document-picker';
+
+const BASE_URL = "http://3.37.42.228//";
+
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
     props.navigationProps.toggleDrawer();
@@ -81,6 +85,60 @@ const TodayPage = ({ navigation }) => {
   const [image,setImage] = useState(null);
   const [camera, setCamera] = useState(false);
 
+  const [singleFile, setSingleFile] = useState(null);
+
+  const uploadImage = async () => {
+    // Check if any file is selected or not
+    if (singleFile != null) {
+      // If file selected then create FormData
+      const fileToUpload = singleFile;
+      const data = new FormData();
+      data.append('name', 'Image Upload');
+      data.append('file_attachment', fileToUpload);
+      // Please change file upload URL
+      let res = await fetch(
+        BASE_URL+'pill_ai/identify/',
+        {
+          method: 'post',
+          body: data,
+          headers: {
+            'Content-Type': 'multipart/form-data; ',
+          },
+        }
+      );
+      let responseJson = await res.json();
+      if (responseJson.status == 1) {
+        alert('Upload Successful');
+      }
+    } else {
+      // If no file selected the show alert
+      alert('Please Select File first');
+    }
+  };
+
+  const selectFile = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const res = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        quality: 1,
+      });
+      console.log('res : ' + JSON.stringify(res));
+      // Setting the state to show single file attributes
+      setSingleFile(res);
+    } catch (err) {
+      setSingleFile(null);
+      // Handling any exception (If any)
+      if (res.cancelled) {
+        // If user canceled the document selection
+        alert('Canceled');
+      } else {
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, }}>
@@ -99,6 +157,17 @@ const TodayPage = ({ navigation }) => {
         </View>
         <TouchableOpacity onPress={() => {setCamera(true);}}>
           <Image style={{...styles.cameraIcon}} source={require("../assets/camera.png")}></Image>
+        </TouchableOpacity>
+        <View style={{flexDirection:"row"}}>
+          <TouchableOpacity
+            onPress={selectFile}>
+            <Text style={styles.menuText}>Select File</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={uploadImage}>
+          <Text>Upload File</Text>
         </TouchableOpacity>
         <Image
           source={{ uri: image }}

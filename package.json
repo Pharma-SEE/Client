@@ -25,7 +25,9 @@
     "expo-font": "~10.0.3",
     "expo-app-loading": "~1.2.1",
     "expo-camera": "~12.0.3",
-    "expo-permissions": "~13.0.3"
+    "expo-permissions": "~13.0.3",
+    "expo-document-picker": "~10.0.3",
+    "expo-image-picker": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

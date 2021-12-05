@@ -5,9 +5,11 @@ import { Button, View, Text, SafeAreaView,
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
 import {Camera} from 'expo-camera'
+import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 
-const BASE_URL = "http://c3ff-121-161-171-137.ngrok.io/";
+const BASE_URL = "http://3.37.42.228/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -25,6 +27,7 @@ const NavigationDrawerStructure = (props) => {
 
 const CameraModule = (props) => {
   const [cameraRef, setCameraRef] = useState(null);
+
 return (
    <Modal
      animationType="slide"
@@ -91,11 +94,64 @@ const FindPage = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
+  const [singleFile, setSingleFile] = useState(null);
+
+  const uploadImage = async () => {
+    // Check if any file is selected or not
+    if (singleFile != null) {
+      // If file selected then create FormData
+      const fileToUpload = singleFile;
+      const data = new FormData();
+      data.append('name', 'Image Upload');
+      data.append('file_attachment', fileToUpload);
+      // Please change file upload URL
+      let res = await fetch(
+        BASE_URL+'pill_ai/identify/',
+        {
+          method: 'post',
+          body: data,
+          headers: {
+            'Content-Type': 'multipart/form-data; ',
+          },
+        }
+      );
+      let responseJson = await res.json();
+      if (responseJson.status == 1) {
+        alert('Upload Successful');
+      }
+    } else {
+      // If no file selected the show alert
+      alert('Please Select File first');
+    }
+  };
+
+  const selectFile = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const res = await DocumentPicker.getDocumentAsync({
+      });
+      console.log('res : ' + JSON.stringify(res));
+      // Setting the state to show single file attributes
+      setSingleFile(res);
+    } catch (err) {
+      setSingleFile(null);
+      // Handling any exception (If any)
+      if (res.cancelled) {
+        // If user canceled the document selection
+        alert('Canceled');
+      } else {
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+
   const searchPills = async () => {
      try {
       if (name){
         setSearch("name");
       }
+      
       else{
         setSearch("effect");
       }
@@ -156,6 +212,17 @@ const FindPage = ({ navigation }) => {
             </TouchableOpacity >
               <Text style={styles.menuText}>사진으로 검색</Text>
             </View>
+            <View style={{flexDirection:"row"}}>
+              <TouchableOpacity
+                onPress={selectFile}>
+                <Text style={styles.menuText}>Select File</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={uploadImage}>
+              <Text>Upload File</Text>
+            </TouchableOpacity>
             
             <View style={{...styles.searching, flexDirection:"row"}}>
               <TextInput
@@ -175,6 +242,7 @@ const FindPage = ({ navigation }) => {
           showModal={camera}
           setModalVisible={() => setCamera(false)}
           setImage={(result) => setImage(result.uri)}
+          
         />
       )}
       {isLoading? <ActivityIndicator/> : (

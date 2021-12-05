@@ -6,7 +6,7 @@ import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
 import * as Font from 'expo-font';
 
-const BASE_URL = "http://88c4-222-109-122-116.ngrok.io/";
+const BASE_URL = "http://3.37.42.228/";
 
 Font.loadAsync({
   'NanumSquareR': require('../assets/fonts/NanumSquareR.ttf'),

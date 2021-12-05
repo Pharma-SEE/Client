@@ -6,7 +6,7 @@ TouchableOpacity, ImageBackground, Modal
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
-const BASE_URL = "http://c3ff-121-161-171-137.ngrok.io/";
+const BASE_URL = "http://3.37.42.228/";
 
 
 const NavigationDrawerStructure = (props) => {
@@ -32,23 +32,23 @@ const PillcasePage = ({ navigation }) => {
   const [remindData, setRemindData] = useState([]);
   const [pillData, setPillData] = useState([]);
 
+  
   const getUserReminders = async () => {
-     try {
+    try {
       const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
       const json = await response.json();
-      //setRemindData(json);
+      await setRemindData(json);
       for(let i=1; i<3; i++){
         console.log("RD\n",remindData[i-1].pill_id);
         const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
           headers: {
-            'Accept': 'application/json',  // It can be used to overcome cors errors
+            'Accept': 'application/json',  
             'Content-Type': 'application/json'
           },
         });
         const pillJson = await pillResponse.json();
-        //console.log(pillJson);
-        const newPills = [...pillData, pillJson]
-        setPillData(newPills);
+        ///console.log("pillJson",pillJson);
+        await setPillData(pillData => [...pillData, pillJson]);
         console.log(i,pillData);
       }
     } catch (error) {
@@ -56,12 +56,37 @@ const PillcasePage = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-  }
+ }
 
-
-  useEffect(() => {
-    getUserReminders();
-  }, []);
+ 
+ useEffect(() => {
+  async function fetchAndSetUser() { 
+    try {
+      const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
+      const json = await response.json();
+      setRemindData(json);
+      for(let i=1; i<3; i++){
+        console.log("RD\n",remindData[i-1].pill_id);
+        const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
+          headers: {
+            'Accept': 'application/json',  
+            'Content-Type': 'application/json'
+          },
+        });
+        const pillJson = await pillResponse.json();
+        ///console.log("pillJson",pillJson);
+        setPillData(pillData => [...pillData, pillJson]);
+        //console.log(i,pillData);
+      }
+      console.log("final",pillData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+     }
+     fetchAndSetUser();
+  },[]);
 
   
   const infoOn = () => {
@@ -78,6 +103,8 @@ const PillcasePage = ({ navigation }) => {
     setAlarm(true);
     setInfo(false);
   }
+
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1,}}>
@@ -96,13 +123,13 @@ const PillcasePage = ({ navigation }) => {
           </View>
           </View>
           {isLoading? <ActivityIndicator/> : (
-            <FlatList remindData={remindData}
-              keyExtractor={({id}, index) => id}
-              renderItem={({item}) => (
+            <FlatList data={pillData}
+              keyExtractor={({id}) => id}
+              renderItem={({item}) =>{return (
                 
                 <View style={{...styles.pillContainer}}>
                   <View style={styles.pillFirstLine}>
-                    <Text style={styles.pillText}>{item.title}</Text>
+                    <Text style={styles.pillText}>{item.name}</Text>
                     <TouchableOpacity style={styles.pillIcon} onPress={info? off: infoOn}>
                         <Fontisto name="info" size={18} style={{ color:info? "green":"black"}}  />
                     </TouchableOpacity>
@@ -111,8 +138,8 @@ const PillcasePage = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                   {!alarm && !info && <View>
-                    <Text style={styles.pillDescription}>[타원형, 흰색 캡슐]</Text>
-                  <Text style={styles.pillDescription}>[항암치료제]</Text>
+                    <Text style={styles.pillDescription}>{item.effect}</Text>
+                  <Text style={styles.pillDescription}>{item.side_effect}</Text>
                   </View>}
                   
                   {alarm && 
@@ -145,11 +172,22 @@ const PillcasePage = ({ navigation }) => {
                   {info && <Text>Info: 부작용, 색, 크기, 복용처, 앞뒷면 글씨 등</Text>}
                 </View>
 
-              )}
+              );}}
               />
           )}
 
-          <ScrollView style={{ flex:4, }}>
+                </ImageBackground>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default PillcasePage;
+
+
+
+/*
+<ScrollView style={{  }}>
           <View style={{...styles.pillContainer}}>
             <View style={styles.pillFirstLine}>
               <Text style={styles.pillText}>[디오솔탄트] [50mg]</Text>
@@ -212,10 +250,5 @@ const PillcasePage = ({ navigation }) => {
           
           
         </ScrollView>
-        </ImageBackground>
-      </View>
-    </SafeAreaView>
-  );
-};
 
-export default PillcasePage;
+        */
