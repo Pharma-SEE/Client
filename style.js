@@ -92,6 +92,19 @@ const styles = StyleSheet.create({
     alignSelf:"center",
   },
 
+  uploadBtn:{
+    width:SCREEN_WIDTH*0.2,
+    backgroundColor:"#FFD966",
+    borderRadius:5,
+    alignItems:"center",
+    justifyContent:"center",
+    height:SCREEN_HEIGHT*0.03,
+    alignSelf:"flex-end",
+    marginLeft:"20%",
+    marginBottom:"2%",
+  },
+  
+
   connectText:{
     fontSize:25,
     color:"white",
@@ -110,6 +123,30 @@ const styles = StyleSheet.create({
     fontFamily:'NanumSquareR',
     fontSize:25,  
     marginLeft:SCREEN_WIDTH*0.1,
+  },
+
+  verySmallText:{
+    color:"black",
+    fontFamily:'NanumSquareB',
+    fontSize:20,  
+    marginLeft:SCREEN_WIDTH*0.1,
+    marginTop:"20%",
+  },
+
+  specialText:{
+    color:"#81BFB3",
+    fontFamily:'NanumSquareB',
+    fontSize:25,  
+    marginLeft:SCREEN_WIDTH*0.1,
+    marginVertical:"3%",
+  },
+
+  mainText:{
+    color:"black",
+    fontFamily:'NanumSquareB',
+    fontSize:25,  
+    marginLeft:SCREEN_WIDTH*0.1,
+    marginVertical:"3%",
   },
 
   menuText:{
@@ -189,7 +226,7 @@ const styles = StyleSheet.create({
   },
 
   profile:{
-    borderWidth: 2,
+    borderWidth: 5,
     borderRadius: 50,
     borderColor: "#FFD966",
     height: 90,

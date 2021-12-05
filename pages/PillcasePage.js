@@ -64,8 +64,8 @@ const PillcasePage = ({ navigation }) => {
     try {
       const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
       const json = await response.json();
-      setRemindData(json);
-      for(let i=1; i<3; i++){
+      setRemindData(json, ()=> console.log(remindData) );
+      for(let i=1; i<2; i++){
         console.log("RD\n",remindData[i-1].pill_id);
         const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
           headers: {

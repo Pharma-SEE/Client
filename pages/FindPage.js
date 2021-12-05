@@ -93,6 +93,8 @@ const FindPage = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  
+  const [none, setNone] = useState(false);
 
   const [singleFile, setSingleFile] = useState(null);
 
@@ -159,6 +161,12 @@ const FindPage = ({ navigation }) => {
       const json = await response.json();
       setData(json);
       console.log(json);
+      if (Object.keys(data).length===0){
+        setNone(true, ()=>console.log(none));
+      }
+      else{
+        setNone(false, ()=>console.log(none));
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -212,17 +220,7 @@ const FindPage = ({ navigation }) => {
             </TouchableOpacity >
               <Text style={styles.menuText}>사진으로 검색</Text>
             </View>
-            <View style={{flexDirection:"row"}}>
-              <TouchableOpacity
-                onPress={selectFile}>
-                <Text style={styles.menuText}>Select File</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={uploadImage}>
-              <Text>Upload File</Text>
-            </TouchableOpacity>
+            
             
             <View style={{...styles.searching, flexDirection:"row"}}>
               <TextInput
@@ -263,6 +261,11 @@ const FindPage = ({ navigation }) => {
               )}
               />
           )}
+        {none && (
+          <View style={{...styles.smallContainer, justifyContent:"space-between"}}>
+            <Text style={{...styles.menuText, textAlign:"center"}}>찾으시는 약이 없습니다.</Text>
+          </View>
+        )}
         </View>
         </ImageBackground>
       </View>

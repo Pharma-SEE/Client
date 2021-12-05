@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, Text, SafeAreaView, ScrollView,
-    TouchableOpacity, ImageBackground, Image, Modal } from 'react-native';
+    TouchableOpacity, ImageBackground, Image, Modal,
+  Alert } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 import {Camera} from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker'; 
 import * as DocumentPicker from 'expo-document-picker';
+import axios from "axios";
 
-const BASE_URL = "http://3.37.42.228//";
+//const BASE_URL = "http://3.37.42.228/";
+const BASE_URL = "http://5874-221-165-24-163.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -86,6 +89,7 @@ const TodayPage = ({ navigation }) => {
   const [camera, setCamera] = useState(false);
 
   const [singleFile, setSingleFile] = useState(null);
+  const [data, setData] = useState([]);
 
   const uploadImage = async () => {
     // Check if any file is selected or not
@@ -93,26 +97,47 @@ const TodayPage = ({ navigation }) => {
       // If file selected then create FormData
       const fileToUpload = singleFile;
       const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      // Please change file upload URL
+      //data.append('name', 'Image Upload');
+      //data.append('file_attachment', fileToUpload);
+      //data.append("uploadFiles", fileToUpload);
+      
+      /*
+      data.append('imgProfile', {
+        name: "sth.png",
+        uri: fileToUpload.uri,
+        type: fileToUpload.type,
+      });
+      */
+
+      data.append('file', fileToUpload);
+      
+      console.log(JSON.stringify(data));
+      
+      const res = await axios.post(BASE_URL+'pill_ai/identify/', data);
+      console.log(res);
+      /*
       let res = await fetch(
         BASE_URL+'pill_ai/identify/',
         {
-          method: 'post',
-          body: data,
+          method: 'POST',
+          body: JSON.stringify(data),
           headers: {
             'Content-Type': 'multipart/form-data; ',
           },
         }
       );
       let responseJson = await res.json();
+
+      */
+      //setData(responseJson);
+      //console.log(data);
+      
       if (responseJson.status == 1) {
-        alert('Upload Successful');
+        Alert.alert('Upload Successful');
       }
     } else {
       // If no file selected the show alert
-      alert('Please Select File first');
+        Alert.alert('Please Select File first');
     }
   };
 
@@ -150,25 +175,33 @@ const TodayPage = ({ navigation }) => {
           }} >
           <NavigationDrawerStructure navigationProps={navigation} />
         </View>
-        <View style={{...styles.smallContainer, marginTop:"5%"}}>
+        <View style={{...styles.container, marginTop:"5%"}}>
           <Text style={{...styles.title, fontSize:33}}>
             오늘 먹을 약 인식
           </Text>
+
+          <View style={{...styles.smallContainer}}>
+          <View style={{flexDirection:"row"}}>
+            <TouchableOpacity onPress={() => {setCamera(true);}}>
+              <Fontisto style={{...styles.menuIcon, }} name="camera" size={21} />
+            </TouchableOpacity >
+              <Text style={styles.menuText}>사진 찍어 검색</Text>
+          </View>
+          <View style={{flexDirection:"row"}}>
+            <TouchableOpacity onPress={selectFile}>
+              <Fontisto style={{...styles.menuIcon, }} name="picture" size={21} />
+            </TouchableOpacity >
+              <Text style={styles.menuText}>갤러리에서 검색</Text>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={uploadImage} style={{...styles.uploadBtn}}>
+              <Text>Upload File</Text>
+            </TouchableOpacity>  
+          </View>
         </View>
-        <TouchableOpacity onPress={() => {setCamera(true);}}>
-          <Image style={{...styles.cameraIcon}} source={require("../assets/camera.png")}></Image>
-        </TouchableOpacity>
-        <View style={{flexDirection:"row"}}>
-          <TouchableOpacity
-            onPress={selectFile}>
-            <Text style={styles.menuText}>Select File</Text>
-          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={uploadImage}>
-          <Text>Upload File</Text>
-        </TouchableOpacity>
+        
+      
         <Image
           source={{ uri: image }}
           style={{ width: 120, height: 120, }}

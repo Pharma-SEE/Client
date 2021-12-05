@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Button, View, Text, SafeAreaView, 
-  TouchableOpacity, ImageBackground, 
+  TouchableOpacity, ImageBackground, Image, 
 FlatList, ActivityIndicator } from 'react-native';
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
@@ -60,11 +60,16 @@ const MainPage = ({ navigation }) => {
         </View>
         <View style={styles.container}>
             <View style={{flexDirection:"row"}}>
-                <Text
-                  style={{...styles.smallText, color:"black", marginTop:"5%"}}>
-                  안녕하세요,{"\n"}[모건]님! :) {"\n"}오늘 복용하실 약은
-                </Text>
-                <View style={{...styles.profile }}></View>
+                <View>
+                  <Text style={{...styles.verySmallText, marginTop:"20%"}}>안녕하세요, </Text>
+                  <View style={{flexDirection:"row"}}>
+                    <Text style={{...styles.specialText}}>미주</Text>
+                    <Text style={{...styles.mainText, marginLeft:0}}>님! :)</Text>
+                  </View>
+                  <Text style={{...styles.mainText, marginTop:"10%"}}>오늘 복용하실 약은</Text>
+                </View>
+                <Image source={require("../images/user_profile.jpg")} style={styles.profile} />
+                
             </View>
           {isLoading? <ActivityIndicator/> : (
             <FlatList data={data}

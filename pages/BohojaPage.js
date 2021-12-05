@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Button, View, Text, SafeAreaView, ScrollView,
-    TouchableOpacity, ImageBackground, TextInput } from 'react-native';
+    TouchableOpacity, ImageBackground, TextInput,
+    ActivityIndicator, FlatList } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
+
+const BASE_URL = "http://3.37.42.228/";
     
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -20,18 +23,38 @@ const NavigationDrawerStructure = (props) => {
 
 const BohojaPage = ({ navigation }) => {
     const [text, setText] = useState("");
+    const [data, setData] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
     
     const onChangeText = (texting) => setText(texting);
+
+    const searchBohoja = async () => {
+        try {
+         const response = await fetch(BASE_URL+'accounts/search/?username='+text);
+         const json = await response.json();
+         setData(json);
+         console.log(json);
+       } catch (error) {
+         console.error(error);
+       } finally {
+         setLoading(false);
+       }
+     }
 
     const sendSearching = async () => {
         if (text === "") {
           return;
         }
-        //send searching info to Server
+        searchBohoja()
         console.log(text)
         setText("");
       };
+    
+    const follow = async () =>{
+        //not yet.. ToDo
+    }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1,}}>
@@ -45,9 +68,6 @@ const BohojaPage = ({ navigation }) => {
             보호자 검색
           </Text>
           <View style={styles.smallContainer}>
-            
-           
-            
             <View style={{...styles.searching, flexDirection:"row"}}>
               <TextInput
               onSubmitEditing={sendSearching}
@@ -61,7 +81,21 @@ const BohojaPage = ({ navigation }) => {
               </TouchableOpacity>
               </View>
           </View>
-          
+          {isLoading? <ActivityIndicator/> : (
+            <FlatList data={data}
+              keyExtractor={({id}, index) => id}
+              renderItem={({item}) => (
+                <View style={styles.pillContainer}>
+                <Text style={styles.pillText}>{item.username}</Text>
+                
+                <Text style={styles.pillDescription}>{item.username}</Text>
+                <TouchableOpacity style={{...styles.connectBtn, alignSelf:"flex-end"}} onPress={follow}>
+                  <Text>Follow</Text>
+                </TouchableOpacity>
+              </View>
+              )}
+              />
+          )}
         </View>
         </ImageBackground>
       </View>
