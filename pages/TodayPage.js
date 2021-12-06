@@ -10,7 +10,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://5874-221-165-24-163.ngrok.io/";
+const BASE_URL = "http://3025-221-165-24-163.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -113,7 +113,7 @@ const TodayPage = ({ navigation }) => {
       
       console.log(JSON.stringify(data));
       
-      const res = await axios.post(BASE_URL+'pill_ai/identify/', data);
+      const res = await axios.post(BASE_URL+'pill_ai/img_upload/', data);
       console.log(res);
       /*
       let res = await fetch(

@@ -32,62 +32,59 @@ const PillcasePage = ({ navigation }) => {
   const [remindData, setRemindData] = useState([]);
   const [pillData, setPillData] = useState([]);
 
-  
-  const getUserReminders = async () => {
-    try {
-      const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
-      const json = await response.json();
-      await setRemindData(json);
-      for(let i=1; i<3; i++){
-        console.log("RD\n",remindData[i-1].pill_id);
-        const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
-          headers: {
-            'Accept': 'application/json',  
-            'Content-Type': 'application/json'
-          },
-        });
-        const pillJson = await pillResponse.json();
-        ///console.log("pillJson",pillJson);
-        await setPillData(pillData => [...pillData, pillJson]);
-        console.log(i,pillData);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+ const getReminds = async () => {
+  try {
+    const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
+    const json = await response.json();
+    setRemindData(json);
+    console.log("remind",remindData);
+    
+  } catch (error) {
+    console.error(error);
+  } finally {
+    getPills();
+    setLoading(true);
+  }
  }
 
- 
- useEffect(() => {
-  async function fetchAndSetUser() { 
-    try {
-      const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
-      const json = await response.json();
-      setRemindData(json, ()=> console.log(remindData) );
-      for(let i=1; i<2; i++){
-        console.log("RD\n",remindData[i-1].pill_id);
-        const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
-          headers: {
-            'Accept': 'application/json',  
-            'Content-Type': 'application/json'
-          },
-        });
-        const pillJson = await pillResponse.json();
-        ///console.log("pillJson",pillJson);
-        setPillData(pillData => [...pillData, pillJson]);
-        //console.log(i,pillData);
-      }
-      console.log("final",pillData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+ const getPills = async () => {
+  try {
+    
+    for(let i=1; i<2; i++){
+      console.log("RD\n",remindData[i-1].pill_id);
+      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
+        headers: {
+          'Accept': 'application/json',  
+          'Content-Type': 'application/json'
+        },
+      });
+      const pillJson = await pillResponse.json();
+      setPillData(pillData => [...pillData, pillJson]);
     }
-     }
-     fetchAndSetUser();
+    
+  } catch (error) {
+    console.error(error);
+  } finally {
+    console.log("final",pillData);
+    setLoading(false);
+  }
+ }
+
+ useEffect(() => {
+    getReminds();  
   },[]);
 
+  useEffect(()=>{
+    console.log("remindData",remindData);
+  }, [remindData])
+
+  useEffect(()=>{
+    console.log("pillData",pillData);
+  }, [pillData])
+
+  useEffect(()=>{
+    console.log("loading",isLoading);
+  }, [isLoading])
   
   const infoOn = () => {
     setInfo(true);
@@ -104,7 +101,7 @@ const PillcasePage = ({ navigation }) => {
     setInfo(false);
   }
 
-  
+   
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1,}}>
@@ -123,9 +120,11 @@ const PillcasePage = ({ navigation }) => {
           </View>
           </View>
           {isLoading? <ActivityIndicator/> : (
-            <FlatList data={pillData}
+            <View>
+              
+            <FlatList data={pillData} 
               keyExtractor={({id}) => id}
-              renderItem={({item}) =>{return (
+              renderItem={({item}) => {return (
                 
                 <View style={{...styles.pillContainer}}>
                   <View style={styles.pillFirstLine}>
@@ -174,6 +173,8 @@ const PillcasePage = ({ navigation }) => {
 
               );}}
               />
+              <Text>STh</Text>
+              </View>
           )}
 
                 </ImageBackground>

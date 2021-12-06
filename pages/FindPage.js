@@ -98,55 +98,14 @@ const FindPage = ({ navigation }) => {
 
   const [singleFile, setSingleFile] = useState(null);
 
-  const uploadImage = async () => {
-    // Check if any file is selected or not
-    if (singleFile != null) {
-      // If file selected then create FormData
-      const fileToUpload = singleFile;
-      const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      // Please change file upload URL
-      let res = await fetch(
-        BASE_URL+'pill_ai/identify/',
-        {
-          method: 'post',
-          body: data,
-          headers: {
-            'Content-Type': 'multipart/form-data; ',
-          },
-        }
-      );
-      let responseJson = await res.json();
-      if (responseJson.status == 1) {
-        alert('Upload Successful');
-      }
-    } else {
-      // If no file selected the show alert
-      alert('Please Select File first');
-    }
-  };
+  useEffect(()=>{
+    console.log(data);
+  }, [data])
 
-  const selectFile = async () => {
-    // Opening Document Picker to select one file
-    try {
-      const res = await DocumentPicker.getDocumentAsync({
-      });
-      console.log('res : ' + JSON.stringify(res));
-      // Setting the state to show single file attributes
-      setSingleFile(res);
-    } catch (err) {
-      setSingleFile(null);
-      // Handling any exception (If any)
-      if (res.cancelled) {
-        // If user canceled the document selection
-        alert('Canceled');
-      } else {
-        alert('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  };
+  useEffect(()=>{
+    console.log(none);
+  }, [none])
+
 
   const searchPills = async () => {
      try {
@@ -159,13 +118,21 @@ const FindPage = ({ navigation }) => {
       }
       const response = await fetch(BASE_URL+'pharmasee/search/?'+search+'='+text);
       const json = await response.json();
-      setData(json);
+      
+            
       console.log(json);
-      if (Object.keys(data).length===0){
-        setNone(true, ()=>console.log(none));
+      console.log(Object.keys(json).length)
+      if (Object.keys(json).length===0){
+        console.log("in if\n");
+        setNone(true);
+        setData([]);
       }
       else{
-        setNone(false, ()=>console.log(none));
+        console.log("in else")
+        
+        setNone(false)
+        setData(json);
+        console.log(data);
       }
     } catch (error) {
       console.error(error);
