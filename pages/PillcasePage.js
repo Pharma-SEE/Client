@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, View, Text, SafeAreaView, ScrollView,
 TouchableOpacity, ImageBackground, Modal
 ,ActivityIndicator, Image, FlatList } from 'react-native';
@@ -6,7 +6,8 @@ TouchableOpacity, ImageBackground, Modal
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
-const BASE_URL = "http://3.37.42.228/";
+//const BASE_URL = "http://3.37.42.228/";
+const BASE_URL= "http://8781-221-165-24-163.ngrok.io/";
 
 
 const NavigationDrawerStructure = (props) => {
@@ -31,25 +32,26 @@ const PillcasePage = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [remindData, setRemindData] = useState([]);
   const [pillData, setPillData] = useState([]);
+  const resetting = useRef(false);
 
  const getReminds = async () => {
   try {
     const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
     const json = await response.json();
+    resetting.current = true;
     setRemindData(json);
     console.log("remind",remindData);
     
   } catch (error) {
     console.error(error);
   } finally {
-    getPills();
-    setLoading(true);
+    //setLoading(true);
+    //getPills();
   }
  }
 
  const getPills = async () => {
   try {
-    
     for(let i=1; i<2; i++){
       console.log("RD\n",remindData[i-1].pill_id);
       const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
@@ -59,23 +61,28 @@ const PillcasePage = ({ navigation }) => {
         },
       });
       const pillJson = await pillResponse.json();
+      setLoading(false);
       setPillData(pillData => [...pillData, pillJson]);
     }
     
   } catch (error) {
-    console.error(error);
+    console.error("GEtPIll err",error);
   } finally {
     console.log("final",pillData);
-    setLoading(false);
   }
  }
 
  useEffect(() => {
-    getReminds();  
+    getReminds();
+    
   },[]);
 
   useEffect(()=>{
     console.log("remindData",remindData);
+    if (resetting.current){
+      resetting.current=false;
+      getPills();
+    }
   }, [remindData])
 
   useEffect(()=>{
@@ -120,7 +127,7 @@ const PillcasePage = ({ navigation }) => {
           </View>
           </View>
           {isLoading? <ActivityIndicator/> : (
-            <View>
+            
               
             <FlatList data={pillData} 
               keyExtractor={({id}) => id}
@@ -173,8 +180,6 @@ const PillcasePage = ({ navigation }) => {
 
               );}}
               />
-              <Text>STh</Text>
-              </View>
           )}
 
                 </ImageBackground>

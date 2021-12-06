@@ -9,8 +9,8 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 
-//const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://3025-221-165-24-163.ngrok.io/";
+//const BASE_URL = "http://3.37.42.228";
+const BASE_URL = "http://8781-221-165-24-163.ngrok.io";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -90,31 +90,36 @@ const TodayPage = ({ navigation }) => {
 
   const [singleFile, setSingleFile] = useState(null);
   const [data, setData] = useState([]);
+  const [res, setRes] = useState([]);
 
   const uploadImage = async () => {
     // Check if any file is selected or not
     if (singleFile != null) {
       // If file selected then create FormData
       const fileToUpload = singleFile;
+      console.log(singleFile);
       const data = new FormData();
       //data.append('name', 'Image Upload');
       //data.append('file_attachment', fileToUpload);
       //data.append("uploadFiles", fileToUpload);
       
-      /*
-      data.append('imgProfile', {
-        name: "sth.png",
-        uri: fileToUpload.uri,
-        type: fileToUpload.type,
+      
+      data.append('image', {
+        name: "test.jpg",
+        uri: 
+        fileToUpload.uri.replace("file://",""),
+        type: "image/jpg",
       });
-      */
+      
 
-      data.append('file', fileToUpload);
+      //data.append('file', fileToUpload);
       
       console.log(JSON.stringify(data));
       
-      const res = await axios.post(BASE_URL+'pill_ai/img_upload/', data);
+      const res = await axios.post(BASE_URL+'/pill_ai/img_upload/', data);
       console.log(res);
+      setRes(res);
+      console.log(res.data.input_image);
       /*
       let res = await fetch(
         BASE_URL+'pill_ai/identify/',
@@ -132,13 +137,13 @@ const TodayPage = ({ navigation }) => {
       //setData(responseJson);
       //console.log(data);
       
-      if (responseJson.status == 1) {
+      if (res.status == 201) {
         Alert.alert('Upload Successful');
       }
-    } else {
+     else {
       // If no file selected the show alert
         Alert.alert('Please Select File first');
-    }
+    }}
   };
 
   const selectFile = async () => {
@@ -156,9 +161,9 @@ const TodayPage = ({ navigation }) => {
       // Handling any exception (If any)
       if (res.cancelled) {
         // If user canceled the document selection
-        alert('Canceled');
+        Alert.alert('Canceled');
       } else {
-        alert('Unknown Error: ' + JSON.stringify(err));
+        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
@@ -202,9 +207,11 @@ const TodayPage = ({ navigation }) => {
         </View>
         
       
-        <Image
-          source={{ uri: image }}
-          style={{ width: 120, height: 120, }}
+        
+
+        <Image 
+          source={{uri: BASE_URL + res.data.input_image}}
+          style={{width:120, height:120,}}
         />
         {camera && (
         <CameraModule
