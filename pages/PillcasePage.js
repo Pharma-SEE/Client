@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, View, Text, SafeAreaView, ScrollView,
 TouchableOpacity, ImageBackground, Modal
-,ActivityIndicator, Image, FlatList } from 'react-native';
+,ActivityIndicator, Image, FlatList, Alert } from 'react-native';
 
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL= "http://8781-221-165-24-163.ngrok.io/";
+
+const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
 
 
 const NavigationDrawerStructure = (props) => {
@@ -28,11 +29,14 @@ const PillcasePage = ({ navigation }) => {
   const [info, setInfo] = useState(false);
   const [alarm, setAlarm] = useState(false);
 
-  const [userId,setUserId] = useState("2");
+  const [userId,setUserId] = useState("5");
   const [isLoading, setLoading] = useState(true);
+  
   const [remindData, setRemindData] = useState([]);
   const [pillData, setPillData] = useState([]);
   const resetting = useRef(false);
+
+  const [alarms, setAlarms] = useState({});
 
  const getReminds = async () => {
   try {
@@ -108,6 +112,56 @@ const PillcasePage = ({ navigation }) => {
     setInfo(false);
   }
 
+  const minusAlarm = (key) => {
+    Alert.alert("Delete Alarm", "Are you sure?", [
+      { text: "Cancel" },
+      {
+        text: "I'm Sure",
+        style: "destructive",
+        onPress: () => {
+          const newAlarms = { ...alarms };
+          delete newAlarms[key];
+          setAlarms(newAlarms);
+        },
+      },
+    ]);
+  };
+
+  const plusAlarm =() => {
+    Alert.prompt(
+      "새로운 알람을 입력해주세요",
+      "AM 10:00과 같은 형태로 입력해주세요.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          //onPress: password => console.log("OK Pressed, password: " + password)
+          onPress: newAlarm =>{
+            if (newAlarm === ""){
+              return;
+            }
+            const newAlarms = {
+              ...alarms,
+              [Date.now()]: {newAlarm},
+            };
+            console.log("new",newAlarm);
+            setAlarms(newAlarms);
+            
+            console.log("Alarms",alarms);
+          }
+        }
+      ],
+    );
+  };
+
+  
+
+  
+
    
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -135,7 +189,7 @@ const PillcasePage = ({ navigation }) => {
                 
                 <View style={{...styles.pillContainer}}>
                   <View style={styles.pillFirstLine}>
-                    <Text style={styles.pillText}>{item.name}</Text>
+                    <Text style={{...styles.pillText, fontsize:25}}>{item.name}</Text>
                     <TouchableOpacity style={styles.pillIcon} onPress={info? off: infoOn}>
                         <Fontisto name="info" size={18} style={{ color:info? "green":"black"}}  />
                     </TouchableOpacity>
@@ -145,7 +199,6 @@ const PillcasePage = ({ navigation }) => {
                   </View>
                   {!alarm && !info && <View>
                     <Text style={styles.pillDescription}>{item.effect}</Text>
-                  <Text style={styles.pillDescription}>{item.side_effect}</Text>
                   </View>}
                   
                   {alarm && 
@@ -154,17 +207,31 @@ const PillcasePage = ({ navigation }) => {
                       <Fontisto style={{...styles.menuIcon, color:"green"}} name="check" size={15} />
                       <Text style={{...styles.menuText}}>복용 시간</Text>
                       <TouchableOpacity>
-                        <Fontisto style={{...styles.plusIcon, color:"green"}} name="plus-a" size={17} />
+                        <Fontisto style={{...styles.plusIcon, color:"green"}} onPress={plusAlarm} name="plus-a" size={17} />
                       </TouchableOpacity>
-                    </View>            
+                    </View> 
+                    <ScrollView>
+                      {Object.keys(alarms).map((key)=>
+                        (
+                          <View key={key}>
+                            <View style={{flexDirection:"row"}}>
+                              <Text style={{...styles.alarmText}}> {alarms[key].newAlarm}</Text>
+                              <TouchableOpacity>
+                                <Fontisto style={{...styles.minusIcon}} onPress={()=>minusAlarm(key)} name="minus-a" size={17} />
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        )
+                      )}
+                      </ScrollView>       
                     <View style={{flexDirection:"row"}}>
-                      <Text style={{...styles.alarmText}}> [PM 10:00] </Text>
+                      <Text style={{...styles.alarmText}}> PM 02:00 </Text>
                       <TouchableOpacity>
                         <Fontisto style={{...styles.minusIcon}} name="minus-a" size={17} />
                       </TouchableOpacity>
                     </View>
                     <View style={{flexDirection:"row"}}>
-                      <Text style={{...styles.alarmText}}> [PM 11:00] </Text>
+                      <Text style={{...styles.alarmText}}> PM 11:00 </Text>
                       <TouchableOpacity>
                         <Fontisto style={{...styles.minusIcon}} name="minus-a" size={17} />
                       </TouchableOpacity>
@@ -173,9 +240,17 @@ const PillcasePage = ({ navigation }) => {
                       <Fontisto style={{...styles.menuIcon, color:"green"}} name="check" size={15} />
                       <Text style={{...styles.menuText}}>복용 기간</Text>
                     </View>
-                    <Text style={{...styles.alarmText}}> [2021.11.01 ~ 2021.11.11] </Text>
+                    <Text style={{...styles.alarmText}}> 2021.12.01 ~ 2021.12.31 </Text>
                   </View>}
-                  {info && <Text>Info: 부작용, 색, 크기, 복용처, 앞뒷면 글씨 등</Text>}
+                  {info && 
+                  <View>
+
+                    <Text style={{...styles.menuText}}>부작용</Text>
+                    <Text>{item.side_effect}</Text>
+
+                  </View>
+                  
+                  }
                 </View>
 
               );}}

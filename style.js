@@ -236,6 +236,14 @@ const styles = StyleSheet.create({
     marginVertical:"5%",
   },
 
+  returnImage:{
+    height:300,
+    width:300,
+    alignSelf:"center",
+    marginTop:"10%",
+
+  }
+
   
 });
 

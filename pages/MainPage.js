@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ScrollView, Button, View, Text, SafeAreaView, 
   TouchableOpacity, ImageBackground, Image, 
 FlatList, ActivityIndicator } from 'react-native';
@@ -6,7 +6,8 @@ import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
 import * as Font from 'expo-font';
 
-const BASE_URL = "http://3.37.42.228/";
+//const BASE_URL = "http://3.37.42.228/";
+const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
 
 Font.loadAsync({
   'NanumSquareR': require('../assets/fonts/NanumSquareR.ttf'),
@@ -31,6 +32,71 @@ const MainPage = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
+  
+  const [remindData, setRemindData] = useState([]);
+  const [pillData, setPillData] = useState([]);
+  const resetting = useRef(false);
+
+  const [alarms, setAlarms] = useState({});
+
+ const getReminds = async () => {
+  try {
+    const response = await fetch(BASE_URL+'pharmasee/api/reminders/');
+    const json = await response.json();
+    resetting.current = true;
+    setRemindData(json);
+    console.log("remind",remindData);
+    
+  } catch (error) {
+    console.error(error);
+  } finally {
+  }
+ }
+
+ const getPills = async () => {
+  try {
+    for(let i=1; i<2; i++){
+      console.log("RD\n",remindData[i-1].pill_id);
+      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
+        headers: {
+          'Accept': 'application/json',  
+          'Content-Type': 'application/json'
+        },
+      });
+      const pillJson = await pillResponse.json();
+      setLoading(false);
+      setPillData(pillData => [...pillData, pillJson]);
+    }
+    
+  } catch (error) {
+    console.error("GEtPIll err",error);
+  } finally {
+    console.log("final",pillData);
+  }
+ }
+
+ useEffect(() => {
+    getReminds();
+    
+  },[]);
+
+  useEffect(()=>{
+    console.log("remindData",remindData);
+    if (resetting.current){
+      resetting.current=false;
+      getPills();
+    }
+  }, [remindData])
+
+  useEffect(()=>{
+    console.log("pillData",pillData);
+  }, [pillData])
+
+  useEffect(()=>{
+    console.log("loading",isLoading);
+  }, [isLoading])
+  
+/*
   const getPills = async () => {
      try {
       const response = await fetch(BASE_URL+'pharmasee/search/');
@@ -42,6 +108,7 @@ const MainPage = ({ navigation }) => {
       setLoading(false);
     }
   }
+  */
 
   useEffect(() => {
     getPills();
@@ -71,15 +138,26 @@ const MainPage = ({ navigation }) => {
                 <Image source={require("../images/user_profile.jpg")} style={styles.profile} />
                 
             </View>
-          {isLoading? <ActivityIndicator/> : (
-            <FlatList data={data}
-              keyExtractor={({id}, index) => id}
-              renderItem={({item}) => (
-                <View style={styles.pillContainer}>
-                <Text style={styles.pillText}>{item.name}</Text>
-                <Text style={styles.pillDescription}>{item.effect}</Text>
-              </View>
-              )}
+
+            {isLoading? <ActivityIndicator/> : (
+            
+              
+            <FlatList data={pillData} 
+              keyExtractor={({id}) => id}
+              renderItem={({item}) => {return (
+                
+                <View style={{...styles.pillContainer}}>
+                  <View >
+                    <Text style={{...styles.pillText, fontsize:25}}>{item.name}</Text>
+                    <Text style={{...styles.pillDescription}}>{item.effect}</Text>
+                    
+                  </View>
+                  
+                  
+                  
+                </View>
+
+              );}}
               />
           )}
           

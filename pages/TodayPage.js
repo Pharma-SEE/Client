@@ -10,7 +10,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 
 //const BASE_URL = "http://3.37.42.228";
-const BASE_URL = "http://8781-221-165-24-163.ngrok.io";
+const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -118,8 +118,11 @@ const TodayPage = ({ navigation }) => {
       
       const res = await axios.post(BASE_URL+'/pill_ai/img_upload/', data);
       console.log(res);
-      setRes(res);
-      console.log(res.data.input_image);
+      //setRes(res);
+      setRes(res.data.output_image);
+      console.log(res.data.output_image);
+      console.log(res.data.status_mesg);
+      Alert.alert(res.data.status_mesg);
       /*
       let res = await fetch(
         BASE_URL+'pill_ai/identify/',
@@ -138,7 +141,7 @@ const TodayPage = ({ navigation }) => {
       //console.log(data);
       
       if (res.status == 201) {
-        Alert.alert('Upload Successful');
+        Alert.alert(res.data.status_mesg);
       }
      else {
       // If no file selected the show alert
@@ -206,13 +209,13 @@ const TodayPage = ({ navigation }) => {
         </View>
         </View>
         
-      
+        {res && <Image
+          //source={{uri: BASE_URL + res.data.input_image}}
+          source = {{uri: BASE_URL + res}}
+          style={{...styles.returnImage}}
+        />}
         
-
-        <Image 
-          source={{uri: BASE_URL + res.data.input_image}}
-          style={{width:120, height:120,}}
-        />
+        
         {camera && (
         <CameraModule
           showModal={camera}

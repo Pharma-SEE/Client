@@ -6,7 +6,8 @@ import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
 const BASE_URL = "http://3.37.42.228/";
-    
+//const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
+
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
     props.navigationProps.toggleDrawer();
@@ -31,7 +32,7 @@ const BohojaPage = ({ navigation }) => {
 
     const searchBohoja = async () => {
         try {
-         const response = await fetch(BASE_URL+'accounts/search/?username='+text);
+         const response = await fetch(BASE_URL+'accounts/search/?search='+text);
          const json = await response.json();
          setData(json);
          console.log(json);
@@ -88,7 +89,7 @@ const BohojaPage = ({ navigation }) => {
                 <View style={styles.pillContainer}>
                 <Text style={styles.pillText}>{item.username}</Text>
                 
-                <Text style={styles.pillDescription}>{item.username}</Text>
+                <Text style={styles.pillDescription}>{item.email}</Text>
                 <TouchableOpacity style={{...styles.connectBtn, alignSelf:"flex-end"}} onPress={follow}>
                   <Text>Follow</Text>
                 </TouchableOpacity>
