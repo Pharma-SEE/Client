@@ -5,8 +5,8 @@ import { Button, View, Text, SafeAreaView, ScrollView,
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
-const BASE_URL = "http://3.37.42.228/";
-//const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
+//const BASE_URL = "http://3.37.42.228/";
+const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {

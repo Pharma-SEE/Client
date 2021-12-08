@@ -7,7 +7,7 @@ import {Fontisto} from "@expo/vector-icons";
 import * as Font from 'expo-font';
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
+const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/";
 
 Font.loadAsync({
   'NanumSquareR': require('../assets/fonts/NanumSquareR.ttf'),
@@ -30,7 +30,7 @@ const NavigationDrawerStructure = (props) => {
 
 const MainPage = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState("");
 
   
   const [remindData, setRemindData] = useState([]);
@@ -55,16 +55,18 @@ const MainPage = ({ navigation }) => {
 
  const getPills = async () => {
   try {
-    for(let i=1; i<2; i++){
-      console.log("RD\n",remindData[i-1].pill_id);
-      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
+    for(let i=0; i<Object.keys(remindData).length; i++){
+      console.log("RD\n",i, remindData[i].pill_id);
+      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i].pill_id)+'/',{
         headers: {
           'Accept': 'application/json',  
           'Content-Type': 'application/json'
         },
       });
       const pillJson = await pillResponse.json();
+      console.log(pillJson);
       setLoading(false);
+      resetting.current = true;
       setPillData(pillData => [...pillData, pillJson]);
     }
     
@@ -73,6 +75,15 @@ const MainPage = ({ navigation }) => {
   } finally {
     console.log("final",pillData);
   }
+ }
+
+ const setTimes = () => {
+   console.log("pilldata in setTimes", Object.keys(pillData).length, pillData);
+    for (let i=0; i<Object.keys(pillData).length; i++){
+      pillData[i].when_to_take = remindData[i].when_to_take;
+      pillData[i].is_taken_today = remindData[i].is_taken_today;
+    }
+    
  }
 
  useEffect(() => {
@@ -90,29 +101,24 @@ const MainPage = ({ navigation }) => {
 
   useEffect(()=>{
     console.log("pillData",pillData);
+    if (resetting.current){
+      resetting.current=false;
+      setTimes();
+    }
   }, [pillData])
 
   useEffect(()=>{
     console.log("loading",isLoading);
   }, [isLoading])
+
+ 
   
-/*
-  const getPills = async () => {
-     try {
-      const response = await fetch(BASE_URL+'pharmasee/search/');
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-  */
 
   useEffect(() => {
     getPills();
   }, []);
+
+ 
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -121,21 +127,21 @@ const MainPage = ({ navigation }) => {
         <View style={{
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom:50,
+            marginBottom:30,
           }} >
           <NavigationDrawerStructure navigationProps={navigation} />
         </View>
-        <View style={styles.container}>
+        <View style={{...styles.container}}>
             <View style={{flexDirection:"row"}}>
                 <View>
                   <Text style={{...styles.verySmallText, marginTop:"20%"}}>안녕하세요, </Text>
                   <View style={{flexDirection:"row"}}>
-                    <Text style={{...styles.specialText}}>미주</Text>
+                    <Text style={{...styles.specialText}}>일남</Text>
                     <Text style={{...styles.mainText, marginLeft:0}}>님! :)</Text>
                   </View>
                   <Text style={{...styles.mainText, marginTop:"10%"}}>오늘 복용하실 약은</Text>
                 </View>
-                <Image source={require("../images/user_profile.jpg")} style={styles.profile} />
+                <Image source={require("../images/user_ilnam.png")} style={styles.profile} />
                 
             </View>
 
@@ -147,14 +153,12 @@ const MainPage = ({ navigation }) => {
               renderItem={({item}) => {return (
                 
                 <View style={{...styles.pillContainer}}>
-                  <View >
+                  <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                     <Text style={{...styles.pillText, fontsize:25}}>{item.name}</Text>
-                    <Text style={{...styles.pillDescription}}>{item.effect}</Text>
-                    
+                    <Text style={{...styles.pillDescription}}>복용시간: {String(item.when_to_take).substr(0,5)}</Text>
+                    {item.is_taken_today &&  <Fontisto style={{color: "green"}} name="check" size={15} /> }
                   </View>
-                  
-                  
-                  
+                  <Text style={{...styles.pillDescription}}>{item.effect}</Text>
                 </View>
 
               );}}

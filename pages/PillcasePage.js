@@ -8,7 +8,7 @@ import {Fontisto} from '@expo/vector-icons'
 
 //const BASE_URL = "http://3.37.42.228/";
 
-const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/";
+const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/";
 
 
 const NavigationDrawerStructure = (props) => {
@@ -26,12 +26,12 @@ const NavigationDrawerStructure = (props) => {
 };
 
 const PillcasePage = ({ navigation }) => {
-  const [info, setInfo] = useState(false);
-  const [alarm, setAlarm] = useState(false);
+  const [info, setInfo] = useState("");
+  const [alarm, setAlarm] = useState("");
 
   const [userId,setUserId] = useState("5");
   const [isLoading, setLoading] = useState(true);
-  
+
   const [remindData, setRemindData] = useState([]);
   const [pillData, setPillData] = useState([]);
   const resetting = useRef(false);
@@ -56,9 +56,9 @@ const PillcasePage = ({ navigation }) => {
 
  const getPills = async () => {
   try {
-    for(let i=1; i<2; i++){
+    for(let i=1; i<4; i++){
       console.log("RD\n",remindData[i-1].pill_id);
-      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id),{
+      const pillResponse = await fetch(BASE_URL+'pharmasee/api/pills/'+ JSON.stringify(remindData[i-1].pill_id)+'/',{
         headers: {
           'Accept': 'application/json',  
           'Content-Type': 'application/json'
@@ -97,19 +97,19 @@ const PillcasePage = ({ navigation }) => {
     console.log("loading",isLoading);
   }, [isLoading])
   
-  const infoOn = () => {
-    setInfo(true);
-    setAlarm(false);
+  const infoOn = (pillName) => {
+    setInfo(pillName);
+    setAlarm("");
   }
 
   const off = () =>{
-    setInfo(false);
-    setAlarm(false);
+    setInfo("");
+    setAlarm("");
   }
 
-  const alarmOn = () => {
-    setAlarm(true);
-    setInfo(false);
+  const alarmOn = (pillName) => {
+    setAlarm(pillName);
+    setInfo("");
   }
 
   const minusAlarm = (key) => {
@@ -190,18 +190,18 @@ const PillcasePage = ({ navigation }) => {
                 <View style={{...styles.pillContainer}}>
                   <View style={styles.pillFirstLine}>
                     <Text style={{...styles.pillText, fontsize:25}}>{item.name}</Text>
-                    <TouchableOpacity style={styles.pillIcon} onPress={info? off: infoOn}>
-                        <Fontisto name="info" size={18} style={{ color:info? "green":"black"}}  />
+                    <TouchableOpacity style={styles.pillIcon} onPress={(info===item.name)? off: () => infoOn(item.name)}>
+                        <Fontisto name="info" size={18} style={{ color:(info===item.name)? "green":"black"}}  />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{...styles.pillIcon}} onPress={alarm? off: alarmOn}>
-                        <Fontisto name="bell" size={18} style={{ color:alarm? "green":"black"}} />
+                    <TouchableOpacity style={{...styles.pillIcon}} onPress={(alarm===item.name)? off: ()=>alarmOn(item.name)}>
+                        <Fontisto name="bell" size={18} style={{ color:(alarm===item.name)? "green":"black"}} />
                     </TouchableOpacity>
                   </View>
-                  {!alarm && !info && <View>
+                  {(alarm!=item.name) && (info!=item.name) && <View>
                     <Text style={styles.pillDescription}>{item.effect}</Text>
                   </View>}
                   
-                  {alarm && 
+                  {(alarm===item.name) && 
                   <View>
                     <View style={{flexDirection:"row"}}>
                       <Fontisto style={{...styles.menuIcon, color:"green"}} name="check" size={15} />
@@ -210,6 +210,13 @@ const PillcasePage = ({ navigation }) => {
                         <Fontisto style={{...styles.plusIcon, color:"green"}} onPress={plusAlarm} name="plus-a" size={17} />
                       </TouchableOpacity>
                     </View> 
+                          
+                    <View style={{flexDirection:"row"}}>
+                      <Text style={{...styles.alarmText}}> AM 09:00 </Text>
+                      <TouchableOpacity>
+                        <Fontisto style={{...styles.minusIcon}} name="minus-a" size={17} />
+                      </TouchableOpacity>
+                    </View>
                     <ScrollView>
                       {Object.keys(alarms).map((key)=>
                         (
@@ -223,26 +230,14 @@ const PillcasePage = ({ navigation }) => {
                           </View>
                         )
                       )}
-                      </ScrollView>       
-                    <View style={{flexDirection:"row"}}>
-                      <Text style={{...styles.alarmText}}> PM 02:00 </Text>
-                      <TouchableOpacity>
-                        <Fontisto style={{...styles.minusIcon}} name="minus-a" size={17} />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={{flexDirection:"row"}}>
-                      <Text style={{...styles.alarmText}}> PM 11:00 </Text>
-                      <TouchableOpacity>
-                        <Fontisto style={{...styles.minusIcon}} name="minus-a" size={17} />
-                      </TouchableOpacity>
-                    </View>
+                      </ScrollView> 
                     <View style={{flexDirection:"row"}}>
                       <Fontisto style={{...styles.menuIcon, color:"green"}} name="check" size={15} />
                       <Text style={{...styles.menuText}}>복용 기간</Text>
                     </View>
                     <Text style={{...styles.alarmText}}> 2021.12.01 ~ 2021.12.31 </Text>
                   </View>}
-                  {info && 
+                  {(info===item.name) && 
                   <View>
 
                     <Text style={{...styles.menuText}}>부작용</Text>

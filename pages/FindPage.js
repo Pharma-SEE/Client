@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, Text, SafeAreaView, 
     TouchableOpacity, ImageBackground, TextInput, Modal,
-  ActivityIndicator, FlatList, Image } from 'react-native';
+  ActivityIndicator, FlatList, Image, Alert } from 'react-native';
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
 import {Camera} from 'expo-camera'
@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://06bc-2001-2d8-e993-e62-ec25-dd2a-3d6-382f.ngrok.io/"
+const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/"
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -157,6 +157,10 @@ const FindPage = ({ navigation }) => {
     setText("");
   };
 
+  const addToCase = () => {
+    Alert.alert('약통에 추가되었습니다.');
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1,}}>
@@ -222,7 +226,7 @@ const FindPage = ({ navigation }) => {
                     style={{ width: 120, height: 120, }}
                         />
                 <Text style={styles.pillDescription}>{item.effect}</Text>
-                <TouchableOpacity style={{...styles.connectBtn}}>
+                <TouchableOpacity style={{...styles.connectBtn}} onPress={addToCase}>
                   <Text>약통에 추가</Text>
                 </TouchableOpacity>
               </View>
