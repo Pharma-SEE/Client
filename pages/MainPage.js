@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ScrollView, Button, View, Text, SafeAreaView, 
+import { View, Text, SafeAreaView, 
   TouchableOpacity, ImageBackground, Image, 
 FlatList, ActivityIndicator } from 'react-native';
 import styles from '../style';

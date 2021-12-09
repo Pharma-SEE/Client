@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, ScrollView,
+import { View, Text, SafeAreaView, 
     TouchableOpacity, ImageBackground, Image, Modal,
   Alert } from 'react-native';
 import styles from '../style';

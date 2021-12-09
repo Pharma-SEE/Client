@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, View, Text, SafeAreaView, ScrollView,
+import { View, Text, SafeAreaView, ScrollView,
 TouchableOpacity, ImageBackground, Modal
-,ActivityIndicator, Image, FlatList, Alert } from 'react-native';
+,ActivityIndicator, FlatList, Alert } from 'react-native';
 
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
