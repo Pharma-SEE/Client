@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, View, Text, SafeAreaView, 
+import { View, Text, SafeAreaView, 
     TouchableOpacity, ImageBackground, TextInput, Modal,
   ActivityIndicator, FlatList, Image, Alert } from 'react-native';
 import styles from '../style';
 import {Fontisto} from "@expo/vector-icons";
 import {Camera} from 'expo-camera'
-import * as DocumentPicker from 'expo-document-picker';
-import * as ImagePicker from 'expo-image-picker';
 
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/"
+const BASE_URL = "http://4f84-221-165-24-163.ngrok.io/"
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -86,7 +84,7 @@ return (
 };
 
 const FindPage = ({ navigation }) => {
-  const [name, setSearchName] = useState(false);
+  const [name, setName] = useState(false);
   const [text, setText] = useState("");
   const [image,setImage] = useState(null);
   const [camera, setCamera] = useState(false);
@@ -120,20 +118,13 @@ const FindPage = ({ navigation }) => {
       const response = await fetch(BASE_URL+'pharmasee/search/?'+search+'='+text);
       const json = await response.json();
       
-            
-      console.log(json);
-      console.log(Object.keys(json).length)
       if (Object.keys(json).length===0){
-        console.log("in if\n");
         setNone(true);
         setData([]);
       }
-      else{
-        console.log("in else")
-        
+      else{        
         setNone(false)
         setData(json);
-        console.log(data);
       }
     } catch (error) {
       console.error(error);
@@ -143,8 +134,8 @@ const FindPage = ({ navigation }) => {
   }
 
 
-  const searchName = () => setSearchName(true);
-  const searchSymptom = () => setSearchName(false);
+  const searchName = () => setName(true);
+  const searchSymptom = () => setName(false);
   const onChangeText = (texting) => setText(texting);
 
   const sendSearching = async () => {
@@ -178,7 +169,7 @@ const FindPage = ({ navigation }) => {
               <TouchableOpacity onPress={searchSymptom}>
                 <Fontisto style={{...styles.menuIcon, color: name? "black" : "green"}} name="check" size={18} />
               </TouchableOpacity>
-              <Text style={styles.menuText}>증상 검색</Text>
+              <Text style={styles.menuText}>증상으로 검색</Text>
             </View>
             <View style={{flexDirection:"row"}}>
             <TouchableOpacity onPress={searchName}>

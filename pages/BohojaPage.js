@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { Button, View, Text, SafeAreaView, ScrollView,
     TouchableOpacity, ImageBackground, TextInput,
-    ActivityIndicator, FlatList } from 'react-native';
+    ActivityIndicator, FlatList, Alert } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
 //const BASE_URL = "http://3.37.42.228/";
-const BASE_URL = "http://81ab-221-165-24-163.ngrok.io/";
+const BASE_URL = "http://4f84-221-165-24-163.ngrok.io/";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -26,6 +26,11 @@ const BohojaPage = ({ navigation }) => {
     const [text, setText] = useState("");
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [none, setNone] = useState(false);
+
+    useEffect(()=>{
+        console.log(none);
+      }, [none])
 
     
     const onChangeText = (texting) => setText(texting);
@@ -34,8 +39,14 @@ const BohojaPage = ({ navigation }) => {
         try {
          const response = await fetch(BASE_URL+'accounts/search/?search='+text);
          const json = await response.json();
-         setData(json);
-         console.log(json);
+         if (Object.keys(json).length===0){
+            setNone(true);
+            setData([]);
+          }
+          else{
+            setNone(false)
+            setData(json);
+          }
        } catch (error) {
          console.error(error);
        } finally {
@@ -53,7 +64,7 @@ const BohojaPage = ({ navigation }) => {
       };
     
     const follow = async () =>{
-        //not yet.. ToDo
+        Alert.alert("Follow 요청이 처리되었습니다.")
     }
 
   return (
@@ -97,6 +108,11 @@ const BohojaPage = ({ navigation }) => {
               )}
               />
           )}
+          {none && (
+          <View style={{...styles.smallContainer, justifyContent:"space-between"}}>
+            <Text style={{...styles.menuText, textAlign:"center"}}>찾으시는 보호자가 없습니다.</Text>
+          </View>
+        )}
         </View>
         </ImageBackground>
       </View>

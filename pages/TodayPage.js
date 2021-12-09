@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Button, View, Text, SafeAreaView, ScrollView,
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, ScrollView,
     TouchableOpacity, ImageBackground, Image, Modal,
   Alert } from 'react-native';
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 import {Camera} from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker'; 
-import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 
 //const BASE_URL = "http://3.37.42.228";
-const BASE_URL = "http://81ab-221-165-24-163.ngrok.io";
+const BASE_URL = "http://4f84-221-165-24-163.ngrok.io";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {
@@ -89,7 +88,6 @@ const TodayPage = ({ navigation }) => {
   const [camera, setCamera] = useState(false);
 
   const [singleFile, setSingleFile] = useState(null);
-  const [data, setData] = useState([]);
   const [res, setRes] = useState([]);
 
   const uploadImage = async () => {
@@ -106,40 +104,16 @@ const TodayPage = ({ navigation }) => {
         type: "image/jpg",
       });
       
-
-      //data.append('file', fileToUpload);
-      
       console.log(JSON.stringify(data));
       
       const res = await axios.post(BASE_URL+'/pill_ai/img_upload/', data);
-      console.log(res);
-      //setRes(res);
       setRes(res.data.output_image);
-      console.log(res.data.output_image);
-      console.log(res.data.status_mesg);
       Alert.alert(res.data.status_mesg);
-      /*
-      let res = await fetch(
-        BASE_URL+'pill_ai/identify/',
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'multipart/form-data; ',
-          },
-        }
-      );
-      let responseJson = await res.json();
-
-      */
-      //setData(responseJson);
-      //console.log(data);
       
       if (res.status == 201) {
         Alert.alert(res.data.status_mesg);
       }
      else {
-      // If no file selected the show alert
         Alert.alert('Please Select File first');
     }}
   };
@@ -163,15 +137,12 @@ const TodayPage = ({ navigation }) => {
       console.log(JSON.stringify(data));
       
       const res = await axios.post(BASE_URL+'/pill_ai/img_upload/', data);
-      console.log(res);
-      //setRes(res);
       setRes(res.data.output_image);
       
       if (res.status == 201) {
         Alert.alert(res.data.status_mesg);
       }
      else {
-      // If no file selected the show alert
         Alert.alert('Please Select File first');
     }}
   };

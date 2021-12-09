@@ -232,8 +232,8 @@ const styles = StyleSheet.create({
     height: 90,
     width: 90,
     backgroundColor: "#FFD966",
-    marginStart:"10%",
-    marginVertical:"5%",
+    marginStart:"1%",
+    marginTop:"5%",
   },
 
   returnImage:{
