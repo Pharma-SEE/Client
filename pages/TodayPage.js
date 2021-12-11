@@ -8,8 +8,8 @@ import {Camera} from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker'; 
 import axios from "axios";
 
-//const BASE_URL = "http://3.37.42.228";
-const BASE_URL = "http://4f84-221-165-24-163.ngrok.io";
+const BASE_URL = "http://3.37.42.228";
+//const BASE_URL = "http://e185-221-165-24-163.ngrok.io";
 
 const NavigationDrawerStructure = (props) => {
     const toggleDrawer = () => {

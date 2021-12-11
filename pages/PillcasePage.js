@@ -6,9 +6,9 @@ TouchableOpacity, ImageBackground, Modal
 import styles from '../style';
 import {Fontisto} from '@expo/vector-icons'
 
-//const BASE_URL = "http://3.37.42.228/";
+const BASE_URL = "http://3.37.42.228/";
 
-const BASE_URL = "http://4f84-221-165-24-163.ngrok.io/";
+//const BASE_URL = "http://0ab6-2001-2d8-212-e6e-7d0b-9bcb-56b8-77c4.ngrok.io/";
 
 
 const NavigationDrawerStructure = (props) => {

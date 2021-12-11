@@ -15,8 +15,6 @@ import * as Font from 'expo-font';
 import MainPage from './pages/MainPage';
 import FindPage from './pages/FindPage';
 import PillcasePage from './pages/PillcasePage';
-import InfoPage from './pages/InfoPage';
-import AlarmPage from './pages/AlarmPage';
 import TodayPage from './pages/TodayPage';
 import BohojaPage from './pages/BohojaPage';
 
@@ -26,30 +24,6 @@ import styles from './style';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-/*
-const NavigationDrawerStructure = (props) => {
-  //Structure for the navigatin Drawer
-  const toggleDrawer = () => {
-    //Props to open/close the drawer
-    props.navigationProps.toggleDrawer();
-  };
-
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      <TouchableOpacity onPress={toggleDrawer}>
-        <Image
-          source={{
-            uri:
-              'https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png',
-          }}
-          style={{ width: 25, height: 25, marginLeft: 5 }}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-*/
 
 
 function mainScreenStack({ navigation }) {
@@ -94,20 +68,7 @@ function pillcaseScreenStack({ navigation }) {
           title: 'Pillcase Page', //Set Header Title
         }}
       />
-      <Stack.Screen
-        name="InfoPage"
-        component={InfoPage}
-        options={{
-          title: 'Info Page', //Set Header Title
-        }}
-      />
-      <Stack.Screen
-        name="AlarmPage"
-        component={AlarmPage}
-        options={{
-          title: 'Alarm Page', //Set Header Title
-        }}
-      />
+      
     </Stack.Navigator>
   );
 }
